@@ -57,9 +57,9 @@ default['nginx']['pid'] = '/var/run/nginx.pid'
 default['nginx']['gzip']              = 'on'
 default['nginx']['gzip_http_version'] = '1.0'
 default['nginx']['gzip_comp_level']   = '2'
-default['nginx']['gzip_proxied']      = 'any'
+default['nginx']['gzip_proxied']      = 'expired no-cache no-store private auth'
 default['nginx']['gzip_vary']         = 'off'
-default['nginx']['gzip_buffers']      = nil
+default['nginx']['gzip_buffers']      = '4 16k'
 default['nginx']['gzip_types']        = %w[
                                           text/plain
                                           text/css
@@ -73,14 +73,14 @@ default['nginx']['gzip_types']        = %w[
                                           application/json
                                           text/mathml
                                         ]
-default['nginx']['gzip_min_length']   = 1_000
+default['nginx']['gzip_min_length']   = 0 
 default['nginx']['gzip_disable']      = 'MSIE [1-6]\.'
 
 default['nginx']['keepalive']            = 'on'
-default['nginx']['keepalive_timeout']    = 65
-default['nginx']['worker_processes']     = node['cpu'] && node['cpu']['total'] ? node['cpu']['total'] : 1
-default['nginx']['worker_connections']   = 1_024
-default['nginx']['worker_rlimit_nofile'] = nil
+default['nginx']['keepalive_timeout']    = 10
+default['nginx']['worker_processes']     = 8
+default['nginx']['worker_connections']   = 2_048
+default['nginx']['worker_rlimit_nofile'] = 2_048
 default['nginx']['multi_accept']         = false
 default['nginx']['event']                = nil
 default['nginx']['server_tokens']        = nil
@@ -97,4 +97,4 @@ default['nginx']['types_hash_bucket_size'] = 64
 
 default['nginx']['proxy_read_timeout']      = nil
 default['nginx']['client_body_buffer_size'] = nil
-default['nginx']['client_max_body_size']    = nil
+default['nginx']['client_max_body_size']    = '8m'

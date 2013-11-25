@@ -30,3 +30,7 @@ service 'nginx' do
   supports :status => true, :restart => true, :reload => true
   action   :start
 end
+cookbook_file "/etc/nginx/sites-enabled/auto.com.conf" do
+  source "auto.com.conf"
+  mode "0644"
+end
