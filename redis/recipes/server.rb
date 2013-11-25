@@ -1,17 +1,15 @@
 #
-# Cookbook Name::       redis
-# Description::         Redis server with runit service
-# Recipe::              server
-# Author::              Benjamin Black
+# Cookbook Name:: redis
+# Recipe:: server
 #
-# Copyright 2011, Benjamin Black
+# Copyright 2010, Atari, Inc
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #     http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,24 +17,26 @@
 # limitations under the License.
 #
 
-include_recipe 'runit'
-include_recipe 'metachef'
-include_recipe 'redis::default'
-
-daemon_user(:redis) do
-  home          node[:redis][:data_dir]
+package "redis" do
+  package_name "redis-server"
+  action :upgrade
 end
 
-standard_dirs('redis.server') do
-  directories   :conf_dir, :log_dir, :data_dir
+service "redis" do
+  service_name "redis-server"
+  supports :status => true, :restart => true
+  action :enable
 end
 
-kill_old_service('redis-server'){ only_if{ File.exists?("/etc/init.d/redis-server") } }
-
-runit_service "redis_server" do
-  run_state     node[:redis][:server][:run_state]
-  options       node[:redis]
+template "/etc/redis/redis.conf" do
+  source "redis.conf.erb"
+  owner "root"
+  group "root"
+  mode "644"
+  variables node[:redis]
+  notifies :restart, resources(:service => "redis")
 end
 
-announce(:redis, :server,
-  :port => node[:redis][:server][:port])
+service "redis" do
+  action :start
+end
