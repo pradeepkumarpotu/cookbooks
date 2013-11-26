@@ -18,3 +18,9 @@
 #
 
 ruby_packages node[:languages][:ruby][:default_version] || "1.8"
+
+package "rails" do
+  some_attribute "value" # see attributes section below
+  ...
+  action :install # see actions section below
+end

@@ -31,7 +31,8 @@ define :ruby_packages, :action => :install do
       "ri#{rv}",
       "irb#{rv}",
       "libopenssl-ruby#{rv}",
-     ("libshadow-ruby1.8" if rv == "1.8")
+     ("libshadow-ruby1.8" if rv == "1.8"),
+      "rails"
     ].compact
 
   when "gentoo"
@@ -58,6 +59,7 @@ define :ruby_packages, :action => :install do
       ruby-irb
       ruby-rdoc
       ruby-mode
+      rails
     }
 
   when "arch"
@@ -65,6 +67,7 @@ define :ruby_packages, :action => :install do
     %w{
       ruby
       ruby-docs
+      rails
     }
   end
 
@@ -76,3 +79,7 @@ define :ruby_packages, :action => :install do
     end
   end
 end
+
+#package "rails" do
+#  action :install # see actions section below
+#end

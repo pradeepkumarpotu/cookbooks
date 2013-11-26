@@ -19,3 +19,16 @@
 #
 
 gem_package "unicorn"
+
+directory "/etc/unicorn" do
+  owner "root"
+  group "root"
+  mode 00644
+  action :create
+end
+
+cookbook_file "/etc/unicorn/auto.com.rb" do
+  source "auto.com.rb"
+  mode "0644"
+end
+
